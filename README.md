@@ -1,67 +1,83 @@
-# Voice Interface
+# Voice Interface (VOI)
 
-A voice-assisted agent application that runs natively on **Android** and **desktop** (Linux, macOS, Windows), giving users a fast, private, conversational AI companion.
+Voice-first AI assistant with chat and Excalidraw canvas. Built with Expo SDK 56 (React Native).
 
-## Vision
+## Stack
 
-VOI puts a capable AI agent at your fingertips — or rather, at your voice. Speak naturally, get things done. No cloud dependency, no subscription treadmill, no privacy tradeoffs. Your voice, your device, your data.
+- **Framework**: Expo SDK 56 (React Native) with Expo Router
+- **Voice**: expo-speech-recognition (STT), expo-speech (TTS), Porcupine wake word
+- **State**: Zustand
+- **Storage**: expo-sqlite
+- **CI**: GitHub Actions (lint + typecheck + test)
 
-## Key Principles
+## Getting Started
 
-- **Voice-first**: Audio latency, wake-word accuracy, and conversational UX are the product — not afterthoughts.
-- **Cross-platform consistency**: Android and desktop share one codebase with a single logic core. Adapt presentation, never reimplement.
-- **Privacy by default**: On-device processing wherever possible. Nothing leaves the device without explicit consent.
-- **Ship early, learn fast**: Working software over perfect plans. Validate with real users.
-- **Technical excellence without over-engineering**: Choose boring technology where it works. Reserve innovation for where it differentiates.
+```bash
+# Install dependencies
+npm install
 
-## Repository
+# Start development server
+npm start
+
+# Run on Android
+npm run android
+
+# Run on web
+npm run web
+```
+
+## Project Structure
 
 ```
-github.com/Red-tech-hub/voice-interface
+voi-app/
+├── app/                    # Expo Router (file-based routing)
+│   ├── (tabs)/
+│   │   ├── index.tsx       # Voice / main screen
+│   │   ├── chat.tsx        # Conversation history
+│   │   └── settings.tsx    # Settings
+│   └── _layout.tsx         # Root layout
+├── src/
+│   ├── features/
+│   │   ├── voice/          # Voice pipeline hooks & state
+│   │   ├── agent/          # Agent engine (API client + local LLM)
+│   │   └── chat/           # Chat UI components
+│   ├── shared/
+│   │   ├── hooks/          # Shared hooks
+│   │   ├── stores/         # Zustand stores
+│   │   └── utils/          # Utilities
+│   └── services/
+│       ├── stt.ts          # Speech-to-text wrapper
+│       ├── tts.ts          # Text-to-speech wrapper
+│       ├── wake-word.ts    # Porcupine wrapper
+│       ├── agent.ts        # Agent client (cloud + local)
+│       └── database.ts     # SQLite queries
+├── native/                 # Native module placeholders
+│   ├── llama.cpp/          # On-device LLM (v2)
+│   └── porcupine/          # Porcupine platform config
+├── app.json                # Expo config with plugins
+├── tsconfig.json           # TypeScript strict
+└── package.json
 ```
 
-**Name: `voice-interface`** — created under [Red-tech-hub](https://github.com/Red-tech-hub).
+## Scripts
 
-## Platform Targets
-
-| Platform | Status |
-|----------|--------|
-| Android  | Planned |
-| Linux Desktop | Planned |
-| macOS Desktop | Planned |
-| Windows Desktop | Planned |
+| Command | Description |
+|---------|-------------|
+| `npm start` | Start Expo dev server |
+| `npm run android` | Run on Android |
+| `npm run web` | Run on web |
+| `npm run lint` | ESLint check |
+| `npm run typecheck` | TypeScript type check |
+| `npm test` | Vitest test suite |
 
 ## Architecture
 
-Decided in [VOI-2](/VOI/issues/VOI-2). Full details in [ARCHITECTURE.md](./ARCHITECTURE.md).
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for the full technical architecture decision.
 
-- **Kotlin Multiplatform + Compose Multiplatform** — shared logic core and UI across Android and Desktop
-- **Monorepo: `:shared`, `:android`, `:desktop`** — Gradle modules with version catalog
-- **Voice layer**: Abstract `VoiceService` → Android SpeechRecognizer + Vosk (offline) / Porcupine (wake word)
-- **State**: Coroutines + StateFlow, unidirectional data flow
-- **DI**: Koin, lightweight KMP-compatible
-- **Data**: SQLDelight (offline-first), Kotlinx.serialization
-- **Build**: Gradle Kotlin DSL, Detekt (lint), ktlint (format), GitHub Actions CI
+## Roadmap
 
-## Project Status
-
-| Milestone | Issue | Status |
-|-----------|-------|--------|
-| Hiring plan | [VOI-1](/VOI/issues/VOI-1) | ✅ Done |
-| Architecture & tech stack | [VOI-2](/VOI/issues/VOI-2) | ✅ Done |
-| Product vision & roadmap | [VOI-3](/VOI/issues/VOI-3) | 🔄 In progress |
-| Scaffold & CI | [VOI-4](/VOI/issues/VOI-4) | 🔄 In progress |
-| Repo docs & naming | [VOI-5](/VOI/issues/VOI-5) | 🔄 In progress |
-
-## Team
-
-- **CEO** — Strategy, product direction, hiring
-- **CTO** — Technical roadmap, architecture, engineering execution
-
-## Contributing
-
-Contribution guidelines will be established once the scaffold is in place ([VOI-4](/VOI/issues/VOI-4)).
+See [PRODUCT.md](./PRODUCT.md) for the 3-month product roadmap and epics.
 
 ## License
 
-TBD — to be determined before the first public commit.
+Proprietary — all rights reserved.

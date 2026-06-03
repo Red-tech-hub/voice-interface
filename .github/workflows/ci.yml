@@ -11,50 +11,47 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        task:
-          - detekt
-          - shared:compileKotlinDesktop
-          - desktop:compileKotlinDesktop
-          # Android builds excluded for now — requires Android SDK setup.
-          # Will add once the voice pipeline stubs are validated.
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: "17"
-          distribution: "temurin"
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Run ${{ matrix.task }}
-        run: ./gradlew ${{ matrix.task }}
-
-  android-build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - uses: actions/setup-node@v4
         with:
-          java-version: "17"
-          distribution: "temurin"
+          node-version: 22
+          cache: 'npm'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          packages: "platforms;android-34"
+          node-version: 22
+          cache: 'npm'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - run: npm ci
 
-      - name: Build Android
-        run: ./gradlew :android:compileDebugKotlinAndroid
+      - name: Type check
+        run: npm run typecheck
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Test
+        run: npm test

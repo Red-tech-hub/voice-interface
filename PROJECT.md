@@ -8,23 +8,32 @@ architecture, project scaffold, CI pipeline, and team hiring.
 ## Status
 
 - [x] [VOI-1](/VOI/issues/VOI-1): Hire first engineer + hiring plan
-- [ ] [VOI-2](/VOI/issues/VOI-2): Define technical architecture (in progress, locked by stale run)
-- [ ] [VOI-4](/VOI/issues/VOI-4): Set up project scaffold and CI pipeline (blocked by VOI-2)
+- [x] [VOI-2](/VOI/issues/VOI-2): Define technical architecture
+- [x] [VOI-13](/VOI/issues/VOI-13): Set up Expo project scaffold replacing KMP structure
+- [ ] [VOI-14](/VOI/issues/VOI-14): EPIC-CHAT — Build chat interface with message list and text input
+- [ ] [VOI-15](/VOI/issues/VOI-15): EPIC-VOICE-OUT — Integrate text-to-speech with expo-speech
+- [ ] [VOI-16](/VOI/issues/VOI-16): EPIC-VOICE-IN — Integrate speech-to-text with expo-speech-recognition
+- [ ] [VOI-17](/VOI/issues/VOI-17): EPIC-AGENT — Implement OpenAI-compatible agent client with streaming
+- [ ] [VOI-18](/VOI/issues/VOI-18): EPIC-WAKE — Integrate Porcupine wake word detection
+- [ ] [VOI-19](/VOI/issues/VOI-19): EPIC-BUILD — Configure EAS Build and web deployment pipeline
 
 ## Architecture
 
 See [ARCHITECTURE.md](./ARCHITECTURE.md) for the full tech stack decision.
 
 **Key decisions:**
-- Kotlin Multiplatform + Compose Multiplatform
-- Monorepo: `:shared`, `:android`, `:desktop`
-- Voice: abstract VoiceService, Android SpeechRecognizer, Vosk, Porcupine
-- State: StateFlow + unidirectional data flow
-- Build: Gradle Kotlin DSL, Detekt, ktlint, GitHub Actions
+- Expo SDK 56 (React Native) + Expo Dev Client
+- Expo Router for file-based routing
+- Voice pipeline: Porcupine → expo-speech-recognition → Agent → expo-speech
+- Zustand for state management, expo-sqlite for persistence
+- Cross-platform: Android + Web (desktop)
 
 ## Conventions
 
-- Cross-platform code lives in `:shared`
-- Platform modules only handle OS integration
+- File-based routing via Expo Router (`app/` directory)
+- Feature modules isolated under `src/features/`
+- Shared code in `src/shared/` (hooks, stores, utils)
+- Service wrappers in `src/services/` (stt, tts, wake-word, agent, database)
+- Native module integrations in `native/`
 - Voice-first design: voice is primary input modality
-- Offline-capable: core recognition must work without internet
+- Offline-capable: core speech recognition works without internet
