@@ -1,0 +1,27 @@
+# Build output
+build/
+.gradle/
+*.class
+*.jar
+*.war
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Android
+local.properties
+
+# Gradle wrapper jar — excluded from VCS in some setups
+# (We commit it, so this is commented out)
+# gradle/wrapper/gradle-wrapper.jar
+
+# Kotlin
+*.kotlin_module

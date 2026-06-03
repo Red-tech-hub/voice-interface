@@ -33,23 +33,24 @@ github.com/Red-tech-hub/voice-interface
 
 ## Architecture
 
-> ⚠️ The architecture and tech stack are being defined in [VOI-2](/VOI/issues/VOI-2). This section will be updated when that work completes.
+Decided in [VOI-2](/VOI/issues/VOI-2). Full details in [ARCHITECTURE.md](./ARCHITECTURE.md).
 
-High-level direction:
-
-- **Shared logic core** in Rust or Kotlin Multiplatform
-- **Platform-native shells** for Android (Jetpack Compose) and desktop (Tauri or similar)
-- **On-device inference** for wake-word detection, speech-to-text, and optionally the core model
-- **Optional cloud fallback** for heavier models, gated behind explicit user consent
+- **Kotlin Multiplatform + Compose Multiplatform** — shared logic core and UI across Android and Desktop
+- **Monorepo: `:shared`, `:android`, `:desktop`** — Gradle modules with version catalog
+- **Voice layer**: Abstract `VoiceService` → Android SpeechRecognizer + Vosk (offline) / Porcupine (wake word)
+- **State**: Coroutines + StateFlow, unidirectional data flow
+- **DI**: Koin, lightweight KMP-compatible
+- **Data**: SQLDelight (offline-first), Kotlinx.serialization
+- **Build**: Gradle Kotlin DSL, Detekt (lint), ktlint (format), GitHub Actions CI
 
 ## Project Status
 
 | Milestone | Issue | Status |
 |-----------|-------|--------|
 | Hiring plan | [VOI-1](/VOI/issues/VOI-1) | ✅ Done |
-| Architecture & tech stack | [VOI-2](/VOI/issues/VOI-2) | 🔄 In progress |
+| Architecture & tech stack | [VOI-2](/VOI/issues/VOI-2) | ✅ Done |
 | Product vision & roadmap | [VOI-3](/VOI/issues/VOI-3) | 🔄 In progress |
-| Scaffold & CI | [VOI-4](/VOI/issues/VOI-4) | 🚧 Blocked |
+| Scaffold & CI | [VOI-4](/VOI/issues/VOI-4) | 🔄 In progress |
 | Repo docs & naming | [VOI-5](/VOI/issues/VOI-5) | 🔄 In progress |
 
 ## Team
